@@ -143,6 +143,18 @@ pub cam_zoom_wide_var(v): s | cmd_pkt
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
+pub model_id(): v | cmd_pkt
+' Read the model ID from the camera
+'   Returns: 16-bit model ID
+    cmd_pkt.byte[0] := $00
+    cmd_pkt.byte[1] := $02
+    v := command(_cam_id, INQ_CMD, @cmd_pkt, 2)
+    if ( v < 0 )
+        return
+
+    return (_rxbuff[4] << 8) | _rxbuff[5]
+
+
 pub parse_msg(p_msg): t | b, idx
 ' Parse a read message
 '   Returns: message type
@@ -190,6 +202,18 @@ pub set_cam_id(id)
 ' Set ID of camera to use for subsequent operations
 '   id: 1..7 (clamped to range)
     _cam_id := 1 #> id <# 7
+
+
+pub vendor_id(): v | cmd_pkt
+' Read the vendor ID from the camera
+'   Returns: 16-bit vendor ID
+    cmd_pkt.byte[0] := $00
+    cmd_pkt.byte[1] := $02
+    v := command(_cam_id, INQ_CMD, @cmd_pkt, 2)
+    if ( v < 0 )
+        return
+
+    return (_rxbuff[2] << 8) | _rxbuff[3]
 
 
 pri command(dest_id, cmd_t, p_data, len): s | idx
