@@ -90,7 +90,7 @@ pub cam_power(pwr): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PWR
     cmd_pkt.byte[2] := (pwr) ? $02 : $03        ' non-zero? Power on; else power off.
-    command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
 pub cam_zoom_stop(): s | cmd_pkt
@@ -200,33 +200,28 @@ pri command(dest_id, cmd_t, p_data, len): s | idx
 '   Returns:
 '       number of bytes sent on success
 '       negative numbers on failure
-'    ser[_dbg].strln(@"command()")
     if ( (dest_id < 1) or (dest_id > 8) )
         abort -1                               ' bad address; must be 1..8
 
     if ( (len < PAYLD_LEN_MIN) or (len > PAYLD_LEN_MAX) )
         abort -1                               ' bad payload length; must be 1..14
-#ifdef BUFFERED
-    bytefill(@_buff, 0, 16)
-    _buff[0] := START_BIT | (_src_addr << SRC) | dest_id
-    _buff[1] := cmd_t
-    bytemove(@_buff+2, p_data, len)
-    _buff[2+len] := TERMINATE
-#else
-'    ser[_dbg].printf1(@"[VISCA] %02.2x\n\r", START_BIT | (_src_addr << SRC) | dest_id)
-'    ser[_dbg].printf1(@"[VISCA] %02.2x\n\r", cmd_t)
-'    idx := 0
-'    repeat len
-'        ser[_dbg].printf1(@"[VISCA] %02.2x\n\r", byte[p_data][idx++])
-'    ser[_dbg].printf1(@"[VISCA] %02.2x\n\r", TERMINATE)
 
-    putchar(START_BIT | (_src_addr << SRC) | dest_id)
-    putchar(cmd_t)
-    idx := 0
+    { cache a copy of the message }
+    bytefill(@_buff, 0, MSG_LEN_MAX)
+    s := 0
+    _buff[s++] := START_BIT | (_src_addr << SRC) | dest_id
+    _buff[s++] := cmd_t
     repeat len
-        putchar(byte[p_data][idx++])
-    putchar(TERMINATE)
-#endif
-    return 2+len+1                              ' addr byte + cmd_t + len + terminator
+        _buff[s++] := byte[p_data++]
+    _buff[s++] := TERMINATE
+
+    'ser[_dbg].str(@"[VISCA] ")
+    'ser[_dbg].hexdump(@_buff, 0, 1, s, s)
+
+    { now actually send it }
+    repeat idx from 0 to s-1
+        putchar(_buff[idx])
+
+    return idx                              ' addr byte + cmd_t + len + terminator
 
 
