@@ -88,6 +88,9 @@ con
             FOCUS_AUTO      = $02
             FOCUS_MANUAL    = $03
             FOCUS_AUTO_TOG  = $10
+        CAM_AF_SENS         = $58
+            AF_SENS_HIGH    = $02
+            AF_SENS_LOW     = $03
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -103,6 +106,16 @@ pub attach_funcs(p_tx, p_rx)
 '   p_rx:   pointer to getchar() function
     putchar := p_tx
     getchar := p_rx
+
+
+pub cam_autofocus_sensitivity(sens): s | cmd_pkt
+' Set camera autofocus sensitivity
+'   AF_SENS_HIGH ($02): normal/high sensitivity
+'   AF_SENS_LOW ($03):  low sensitivity
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_AF_SENS
+    cmd_pkt.byte[2] := AF_SENS_HIGH #> sens <# AF_SENS_LOW
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
 pub cam_focus_auto(): s | cmd_pkt
@@ -341,8 +354,8 @@ pri command(dest_id, cmd_t, p_data, len): s | idx
         _buff[s++] := byte[p_data++]
     _buff[s++] := TERMINATE
 
-    'ser[_dbg].str(@"[VISCA] ")
-    'ser[_dbg].hexdump(@_buff, 0, 1, s, s)
+    ser[_dbg].str(@"[VISCA] ")
+    ser[_dbg].hexdump_noascii(@_buff, 0, 1, s, s)
 
     { now actually send it }
     repeat idx from 0 to s-1
