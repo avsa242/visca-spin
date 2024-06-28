@@ -1,3 +1,14 @@
+{
+----------------------------------------------------------------------------------------------------
+    Filename:       protocol.camera.visca.spin
+    Description:    Implementation of Sony's VISCA camera protocol (controller)
+    Author:         Jesse Burt
+    Started:        Jun 28, 2024
+    Updated:        Jun 28, 2024
+    Copyright (c) 2024 - See end of file for terms of use.
+----------------------------------------------------------------------------------------------------
+}
+
 con
 
     { limits }
@@ -66,8 +77,17 @@ con
             ZOOM_WIDE       = $03
             ZOOM_TELE_VAR   = $20
             ZOOM_WIDE_VAR   = $30
+        CAM_FOCUS           = $08
+            FOCUS_STOP      = $00
+            FOCUS_FAR       = $02
+            FOCUS_NEAR      = $03
+            FOCUS_FAR_VAR   = $20
+            FOCUS_NEAR_VAR  = $30
         REG_VAL             = $24
-
+        CAM_AUTOFOCUS       = $38
+            FOCUS_AUTO      = $02
+            FOCUS_MANUAL    = $03
+            FOCUS_AUTO_TOG  = $10
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -83,6 +103,72 @@ pub attach_funcs(p_tx, p_rx)
 '   p_rx:   pointer to getchar() function
     putchar := p_tx
     getchar := p_rx
+
+
+pub cam_focus_auto(): s | cmd_pkt
+' Enable camera auto-focus
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_AUTOFOCUS
+    cmd_pkt.byte[2] := FOCUS_AUTO
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_focus_auto_toggle(): s | cmd_pkt
+' Toggle between automatic and manual focus
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_AUTOFOCUS
+    cmd_pkt.byte[2] := FOCUS_AUTO_TOG
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_focus_far(): s | cmd_pkt
+' Manually focus camera farther
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_FOCUS
+    cmd_pkt.byte[2] := FOCUS_FAR
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_focus_manual(): s | cmd_pkt
+' Enable camera manual-focus
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_AUTOFOCUS
+    cmd_pkt.byte[2] := FOCUS_MANUAL
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_focus_near(): s | cmd_pkt
+' Manually focus camera nearer
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_FOCUS
+    cmd_pkt.byte[2] := FOCUS_NEAR
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_focus_stop(): s | cmd_pkt
+' Stop a running focus operation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_FOCUS
+    cmd_pkt.byte[2] := FOCUS_STOP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
 pub cam_power(pwr): s | cmd_pkt
@@ -255,8 +341,8 @@ pri command(dest_id, cmd_t, p_data, len): s | idx
         _buff[s++] := byte[p_data++]
     _buff[s++] := TERMINATE
 
-    ser[_dbg].str(@"[VISCA] ")
-    ser[_dbg].hexdump(@_buff, 0, 1, s, s)
+    'ser[_dbg].str(@"[VISCA] ")
+    'ser[_dbg].hexdump(@_buff, 0, 1, s, s)
 
     { now actually send it }
     repeat idx from 0 to s-1
@@ -280,10 +366,29 @@ pri read_resp(): s | idx, b
 
     case _rxbuff[1] & RESPTYPE_MASK
         $40, $50:
-            ser[_dbg].printf1(@"[VISCA]: read_resp() ret %02.2x\n\r", _rxbuff[1])
+            'ser[_dbg].printf1(@"[VISCA] read_resp() ret %02.2x\n\r", _rxbuff[1])
             return 1
         $60:
-            ser[_dbg].printf1(@"[VISCA]: read_resp() error; ret %02.2x\n\r", _rxbuff[1])
+            'ser[_dbg].printf1(@"[VISCA] read_resp() error; ret %02.2x\n\r", _rxbuff[1])
             return -1
 
+
+DAT
+{
+Copyright 2024 Jesse Burt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+}
 
