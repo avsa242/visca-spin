@@ -24,6 +24,7 @@ con
     NET_CHANGE          = $38
 
     { response types }
+    RESPTYPE_MASK       = $f0
     ACK                 = $40
     COMPLETION          = $50
     ERROR               = $60
@@ -215,13 +216,35 @@ pri command(dest_id, cmd_t, p_data, len): s | idx
         _buff[s++] := byte[p_data++]
     _buff[s++] := TERMINATE
 
-    'ser[_dbg].str(@"[VISCA] ")
-    'ser[_dbg].hexdump(@_buff, 0, 1, s, s)
+    ser[_dbg].str(@"[VISCA] ")
+    ser[_dbg].hexdump(@_buff, 0, 1, s, s)
 
     { now actually send it }
     repeat idx from 0 to s-1
         putchar(_buff[idx])
 
+    if ( read_resp() < 0 )
+        return -1
+
     return idx                              ' addr byte + cmd_t + len + terminator
+
+var byte _rxbuff[MSG_LEN_MAX]
+pri read_resp(): s | idx, b
+
+    bytefill(@_rxbuff, 0, MSG_LEN_MAX)
+    idx := 0
+    repeat
+        _rxbuff[idx++] := b := getchar()
+    until ( b == TERMINATE )
+    ser[_dbg].str(@"[VISCA] ")
+    ser[_dbg].hexdump(@_rxbuff, 0, 1, idx, idx)
+
+    case _rxbuff[1] & RESPTYPE_MASK
+        $40, $50:
+            ser[_dbg].printf1(@"[VISCA]: read_resp() ret %02.2x\n\r", _rxbuff[1])
+            return 1
+        $60:
+            ser[_dbg].printf1(@"[VISCA]: read_resp() error; ret %02.2x\n\r", _rxbuff[1])
+            return -1
 
 
