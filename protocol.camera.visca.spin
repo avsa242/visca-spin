@@ -68,6 +68,9 @@ con
             ZOOM_WIDE_VAR   = $30
         REG_VAL             = $24
 
+    IF_INQ                  = $00
+        DEV_TYPE            = $02
+
 
 pub attach_dbg(optr)
 ' Attach a debugging output object
@@ -146,8 +149,8 @@ pub cam_zoom_wide_var(v): s | cmd_pkt
 pub model_id(): v | cmd_pkt
 ' Read the model ID from the camera
 '   Returns: 16-bit model ID
-    cmd_pkt.byte[0] := $00
-    cmd_pkt.byte[1] := $02
+    cmd_pkt.byte[0] := IF_INQ
+    cmd_pkt.byte[1] := DEV_TYPE
     v := command(_cam_id, INQ_CMD, @cmd_pkt, 2)
     if ( v < 0 )
         return
