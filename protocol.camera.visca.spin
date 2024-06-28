@@ -201,6 +201,18 @@ pub readreg(reg_nr): v | cmd_pkt, r, idx
     until ( r == TERMINATE )
 
 
+PUB rom_version(): v | cmd_pkt
+' Read the ROM version from the camera
+'   Returns: ROM version
+    cmd_pkt.byte[0] := IF_INQ
+    cmd_pkt.byte[1] := DEV_TYPE
+    v := command(_cam_id, INQ_CMD, @cmd_pkt, 2)
+    if ( v < 0 )
+        return
+
+    return (_rxbuff[6] << 8) | _rxbuff[7]
+
+
 pub set_cam_id(id)
 ' Set ID of camera to use for subsequent operations
 '   id: 1..7 (clamped to range)
