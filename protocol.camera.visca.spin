@@ -82,6 +82,10 @@ con
             ZOOM_TELE_VAR   = $20
             ZOOM_WIDE_VAR   = $30
 
+        CAM_ICR             = $01
+            ICR_ON          = $02
+            ICR_OFF         = $03
+
         CAM_APERTURE        = $02
             APERTURE_RES    = $00
             APERTURE_UP     = $02
@@ -168,6 +172,10 @@ con
         CAM_WD              = $3d
             WD_ON           = $02
             WD_OFF          = $03
+
+        CAM_AUTOICR         = $51
+            AUTOICR_ON      = $02
+            AUTOICR_OFF     = $03
 
         CAM_HIGHRES         = $52
             HIGHRES_ON      = $02
@@ -639,6 +647,42 @@ pub cam_ir_correction_mode(md): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_IR_CORRECTION
     cmd_pkt.byte[2] := IR_CORR_STD #> md <# IR_CORR_IR
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_ir_cut_auto(ena): s | cmd_pkt
+' Enable automatic IR cut
+'   ena:
+'       TRUE (non-zero numbers):    enable
+'       FALSE (0):                  disable
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_AUTOICR
+    cmd_pkt.byte[2] := (ena) ? AUTOICR_ON : AUTOICR_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_ir_cut_off(): s | cmd_pkt
+' IR cut on
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_ICR
+    cmd_pkt.byte[2] := ICR_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_ir_cut_on(): s | cmd_pkt
+' IR cut on
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_ICR
+    cmd_pkt.byte[2] := ICR_ON
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
