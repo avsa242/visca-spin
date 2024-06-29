@@ -82,6 +82,11 @@ con
             ZOOM_TELE_VAR   = $20
             ZOOM_WIDE_VAR   = $30
 
+        CAM_APERTURE        = $02
+            APERTURE_RES    = $00
+            APERTURE_UP     = $02
+            APERTURE_DN     = $03
+
         CAM_RGAIN           = $03
             RGAIN_RESET     = $00
             RGAIN_UP        = $02
@@ -193,6 +198,39 @@ pub attach_funcs(p_tx, p_rx)
 '   p_rx:   pointer to getchar() function
     putchar := p_tx
     getchar := p_rx
+
+
+pub cam_aperture_down(): s | cmd_pkt
+' Decrease aperture
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_APERTURE
+    cmd_pkt.byte[2] := APERTURE_DN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_aperture_reset(): s | cmd_pkt
+' Reset aperture to camera default
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_APERTURE
+    cmd_pkt.byte[2] := APERTURE_RES
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_aperture_up(): s | cmd_pkt
+' Increase aperture
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_APERTURE
+    cmd_pkt.byte[2] := APERTURE_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
 pub cam_autoexposure_mode(md): s | cmd_pkt
