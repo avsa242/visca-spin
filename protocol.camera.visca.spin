@@ -77,28 +77,43 @@ con
             ZOOM_WIDE       = $03
             ZOOM_TELE_VAR   = $20
             ZOOM_WIDE_VAR   = $30
+
         CAM_FOCUS           = $08
             FOCUS_STOP      = $00
             FOCUS_FAR       = $02
             FOCUS_NEAR      = $03
             FOCUS_FAR_VAR   = $20
             FOCUS_NEAR_VAR  = $30
+
         CAM_IR_CORRECTION   = $11
             IR_CORR_STD     = $00
             IR_CORR_IR      = $01
+
         CAM_INITIALIZE      = $19
             INIT_LENS       = $01
             INIT_CAMERA     = $03
+
         REG_VAL             = $24
+
+        CAM_WHITEBAL        = $35
+            WB_AUTO         = $00
+            WB_INDOOR       = $01
+            WB_OUTDOOR      = $02
+            WB_ONEPUSH      = $03
+            WB_ATW          = $04
+            WB_MANUAL       = $05
+
         CAM_AUTOFOCUS       = $38
             FOCUS_AUTO      = $02
             FOCUS_MANUAL    = $03
             FOCUS_AUTO_TOG  = $10
+
         CAM_AF_MODE         = $57
             AF_MD_NORMAL    = $00
             AF_MD_INTERVAL  = $01
             AF_MD_ZOOM_TRIG = $02
             AF_MD_PRESET    = $03
+
         CAM_AF_SENS         = $58
             AF_SENS_HIGH    = $02
             AF_SENS_LOW     = $03
@@ -262,6 +277,24 @@ pub cam_power(pwr): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PWR
     cmd_pkt.byte[2] := (pwr) ? $02 : $03        ' non-zero? Power on; else power off.
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_whitebalance_mode(md): s | cmd_pkt
+' Power on camera
+'   wb:
+'       WB_AUTO ($00):      automatic
+'       WB_INDOOR ($01):    indoor
+'       WB_OUTDOOR ($02):   outdoor
+'       WB_ONEPUSH ($03):   one push white balance
+'       WB_ATW ($04):       auto tracing white balance
+'       WB_MANUAL ($05):    manual control
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_WHITEBAL
+    cmd_pkt.byte[2] := WB_AUTO #> md <# WB_MANUAL
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
