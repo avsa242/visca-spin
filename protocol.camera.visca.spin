@@ -139,6 +139,11 @@ con
             IR_CORR_STD     = $00
             IR_CORR_IR      = $01
 
+        CAM_DISPLAY         = $15
+            DISPLAY_ON      = $02
+            DISPLAY_OFF     = $03
+            DISPLAY_TOG     = $10
+
         CAM_INITIALIZE      = $19
             INIT_LENS       = $01
             INIT_CAMERA     = $03
@@ -758,6 +763,31 @@ pub cam_mirror_v_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PICFLIP
     cmd_pkt.byte[2] := PICFLIP_ON
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_osd_enabled(ena): s | cmd_pkt
+' Enable on-screen display
+'   ena:
+'       TRUE (non-zero values): enabled
+'       FALSE (0): disabled
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_DISPLAY
+    cmd_pkt.byte[2] := (ena) ? DISPLAY_ON : DISPLAY_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_osd_toggle(): s | cmd_pkt
+' Toggle on-screen display
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_DISPLAY
+    cmd_pkt.byte[2] := DISPLAY_TOG
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
