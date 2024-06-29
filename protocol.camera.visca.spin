@@ -136,6 +136,10 @@ con
 
         REG_VAL             = $24
 
+        CAM_BACKLIGHT       = $33
+            BACKLIGHT_ON    = $02
+            BACKLIGHT_OFF   = $03
+
         CAM_WHITEBAL        = $35
             WB_AUTO         = $00
             WB_INDOOR       = $01
@@ -231,6 +235,28 @@ pub cam_autofocus_sensitivity(sens): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AF_SENS
     cmd_pkt.byte[2] := AF_SENS_HIGH #> sens <# AF_SENS_LOW
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_backlight_comp_off(): s | cmd_pkt
+' Disable backlight compensation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_BACKLIGHT
+    cmd_pkt.byte[2] := BACKLIGHT_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_backlight_comp_on(): s | cmd_pkt
+' Enable backlight compensation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_BACKLIGHT
+    cmd_pkt.byte[2] := BACKLIGHT_ON
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
