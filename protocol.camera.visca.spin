@@ -134,6 +134,11 @@ con
         CAM_AF_SENS         = $58
             AF_SENS_HIGH    = $02
             AF_SENS_LOW     = $03
+
+        CAM_SLSHUT          = $5a
+            SLSHUT_AUTO     = $02
+            SLSHUT_MAN      = $03
+
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -378,6 +383,21 @@ pub cam_redgain_up(): s | cmd_pkt
     cmd_pkt.byte[1] := CAM_RGAIN
     cmd_pkt.byte[2] := RGAIN_UP
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_slowshutter_mode(md): s | cmd_pkt
+' Set automatic slow shutter mode
+'   md:
+'       SLSHUT_AUTO ($02):  automatic
+'       SLSHUT_MAN ($03):   manual
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_SLSHUT
+    cmd_pkt.byte[2] := SLSHUT_AUTO #> md <# SLSHUT_MAN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
 
 
 pub cam_whitebalance_mode(md): s | cmd_pkt
