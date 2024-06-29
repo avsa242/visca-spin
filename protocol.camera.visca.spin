@@ -191,6 +191,10 @@ con
 
         CAM_GAMMA           = $5b
 
+        CAM_HIGHSENS        = $5e
+            HIGHSENS_ON     = $02
+            HIGHSENS_OFF    = $03
+
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -527,6 +531,28 @@ pub cam_gain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_GAIN
     cmd_pkt.byte[2] := GAIN_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_high_sens_off(): s | cmd_pkt
+' Disable high sensitivity mode
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_HIGHSENS
+    cmd_pkt.byte[2] := HIGHSENS_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_high_sens_on(): s | cmd_pkt
+' Enable high sensitivity mode
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_HIGHSENS
+    cmd_pkt.byte[2] := HIGHSENS_ON
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
