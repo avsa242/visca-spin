@@ -199,6 +199,10 @@ con
             LR_REVERSE_ON   = $02
             LR_REVERSE_OFF  = $03
 
+        CAM_FREEZE          = $62
+            FREEZE_ON       = $02
+            FREEZE_OFF      = $03
+
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -505,6 +509,17 @@ pub cam_focus_stop(): s | cmd_pkt
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
+pub cam_freeze_image(): s | cmd_pkt
+' Freeze the camera image
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_FREEZE
+    cmd_pkt.byte[2] := FREEZE_ON
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
 pub cam_gain_down(): s | cmd_pkt
 ' Decrease gain
 '   Returns:
@@ -790,6 +805,16 @@ pub cam_slowshutter_mode(md): s | cmd_pkt
     cmd_pkt.byte[2] := SLSHUT_AUTO #> md <# SLSHUT_MAN
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
+
+pub cam_unfreeze_image(): s | cmd_pkt
+' Unfreeze the camera image
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_FREEZE
+    cmd_pkt.byte[2] := FREEZE_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
 pub cam_whitebalance_mode(md): s | cmd_pkt
