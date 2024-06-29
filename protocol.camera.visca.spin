@@ -68,6 +68,10 @@ obj
 
 con
 
+    PARM                    = $20
+    ONOFF                   = $30
+    DIRECT                  = $40
+
     { CAM_ commands }
     CAM_CMD                 = $04
         CAM_PWR             = $00
@@ -114,6 +118,13 @@ con
             BRIGHT_RESET    = $00
             BRIGHT_UP       = $02
             BRIGHT_DN       = $03
+
+        CAM_EXPCOMP         = $0e
+            EXPCOMP_RESET   = $00
+            EXPCOMP_ON      = $02
+            EXPCOMP_OFF     = $03
+            EXPCOMP_UP      = $02
+            EXPCOMP_DOWN    = $03
 
         CAM_IR_CORRECTION   = $11
             IR_CORR_STD     = $00
@@ -286,6 +297,61 @@ pub cam_brightness_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BRIGHT
     cmd_pkt.byte[2] := BRIGHT_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_exp_compensation_down(): s | cmd_pkt
+' Decrease exposure compensation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_EXPCOMP
+    cmd_pkt.byte[2] := EXPCOMP_DOWN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_exp_compensation_off(): s | cmd_pkt
+' Disable exposure compensation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := (CAM_EXPCOMP | ONOFF)
+    cmd_pkt.byte[2] := EXPCOMP_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_exp_compensation_on(): s | cmd_pkt
+' Enable exposure compensation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := (CAM_EXPCOMP | ONOFF)
+    cmd_pkt.byte[2] := EXPCOMP_ON
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_exp_compensation_reset(): s | cmd_pkt
+' Reset exposure compensation to camera default
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_EXPCOMP
+    cmd_pkt.byte[2] := EXPCOMP_RESET
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_exp_compensation_up(): s | cmd_pkt
+' Increase exposure compensation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_EXPCOMP
+    cmd_pkt.byte[2] := EXPCOMP_UP
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
