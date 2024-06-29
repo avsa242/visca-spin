@@ -225,6 +225,11 @@ con
             PICFLIP_ON      = $02
             PICFLIP_OFF     = $03
 
+        CAM_MUTE            = $75
+            MUTE_ON         = $02
+            MUTE_OFF        = $03
+            MUTE_TOG        = $10
+
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -763,6 +768,39 @@ pub cam_mirror_v_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PICFLIP
     cmd_pkt.byte[2] := PICFLIP_ON
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_mute_off(): s | cmd_pkt
+' Disable mute/enable camera image
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_MUTE
+    cmd_pkt.byte[2] := MUTE_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_mute_on(): s | cmd_pkt
+' Enable mute/disable camera image
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_MUTE
+    cmd_pkt.byte[2] := MUTE_ON
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_mute_toggle(): s | cmd_pkt
+' Toggle camera image on/off
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_MUTE
+    cmd_pkt.byte[2] := MUTE_TOG
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
