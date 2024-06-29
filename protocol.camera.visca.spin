@@ -95,6 +95,11 @@ con
             FOCUS_FAR_VAR   = $20
             FOCUS_NEAR_VAR  = $30
 
+        CAM_SHUTTER         = $0a
+            SHUTTER_RES     = $00
+            SHUTTER_UP      = $02
+            SHUTTER_DN      = $03
+
         CAM_IR_CORRECTION   = $11
             IR_CORR_STD     = $00
             IR_CORR_IR      = $01
@@ -382,6 +387,39 @@ pub cam_redgain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_RGAIN
     cmd_pkt.byte[2] := RGAIN_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_shutter_down(): s | cmd_pkt
+' Decrease shutter
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_SHUTTER
+    cmd_pkt.byte[2] := SHUTTER_DN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_shutter_reset(): s | cmd_pkt
+' Reset shutter setting
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_SHUTTER
+    cmd_pkt.byte[2] := SHUTTER_RES
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_shutter_up(): s | cmd_pkt
+' Increase shutter
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_SHUTTER
+    cmd_pkt.byte[2] := SHUTTER_UP
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
