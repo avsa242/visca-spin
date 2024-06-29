@@ -83,6 +83,9 @@ con
             FOCUS_NEAR      = $03
             FOCUS_FAR_VAR   = $20
             FOCUS_NEAR_VAR  = $30
+        CAM_IR_CORRECTION   = $11
+            IR_CORR_STD     = $00
+            IR_CORR_IR      = $01
         REG_VAL             = $24
         CAM_AUTOFOCUS       = $38
             FOCUS_AUTO      = $02
@@ -206,6 +209,20 @@ pub cam_focus_stop(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_FOCUS
     cmd_pkt.byte[2] := FOCUS_STOP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_ir_correction_mode(md): s | cmd_pkt
+' Set focus IR compensation data switching mode
+'   md:
+'       IR_CORR_STD ($00):  standard
+'       IR_CORR_IR ($01):   IR
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_IR_CORRECTION
+    cmd_pkt.byte[2] := IR_CORR_STD #> md <# IR_CORR_IR
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
