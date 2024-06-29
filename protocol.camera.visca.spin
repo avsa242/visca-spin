@@ -105,6 +105,11 @@ con
             IRIS_UP         = $02
             IRIS_DN         = $03
 
+        CAM_GAIN            = $0c
+            GAIN_RES        = $00
+            GAIN_UP         = $02
+            GAIN_DN         = $03
+
         CAM_IR_CORRECTION   = $11
             IR_CORR_STD     = $00
             IR_CORR_IR      = $01
@@ -309,6 +314,39 @@ pub cam_focus_stop(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_FOCUS
     cmd_pkt.byte[2] := FOCUS_STOP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_gain_down(): s | cmd_pkt
+' Decrease gain
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_GAIN
+    cmd_pkt.byte[2] := GAIN_DN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_gain_reset(): s | cmd_pkt
+' Reset gain to camera default
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_GAIN
+    cmd_pkt.byte[2] := GAIN_RES
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_gain_up(): s | cmd_pkt
+' Increase gain
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_GAIN
+    cmd_pkt.byte[2] := GAIN_UP
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
