@@ -173,6 +173,8 @@ con
             HIGHRES_ON      = $02
             HIGHRES_OFF     = $03
 
+        CAM_NOISEREDUCT     = $53
+
         CAM_AF_MODE         = $57
             AF_MD_NORMAL    = $00
             AF_MD_INTERVAL  = $01
@@ -659,6 +661,19 @@ pub cam_redgain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_RGAIN
     cmd_pkt.byte[2] := RGAIN_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_set_noise_reduction(lev): s | cmd_pkt
+' Set noise reduction level
+'   lev:
+'       0 (off), 1..5
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_NOISEREDUCT
+    cmd_pkt.byte[2] := 0 #> lev <# 5
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
