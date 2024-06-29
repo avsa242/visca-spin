@@ -83,6 +83,11 @@ con
             RGAIN_UP        = $02
             RGAIN_DOWN      = $03
 
+        CAM_BGAIN           = $04
+            BGAIN_RESET     = $00
+            BGAIN_UP        = $02
+            BGAIN_DOWN      = $03
+
         CAM_FOCUS           = $08
             FOCUS_STOP      = $00
             FOCUS_FAR       = $02
@@ -166,6 +171,39 @@ pub cam_autofocus_sensitivity(sens): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AF_SENS
     cmd_pkt.byte[2] := AF_SENS_HIGH #> sens <# AF_SENS_LOW
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_bluegain_down(): s | cmd_pkt
+' Decrease blue gain
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_BGAIN
+    cmd_pkt.byte[2] := BGAIN_DOWN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_bluegain_reset(): s | cmd_pkt
+' Reset blue gain to camera default
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_BGAIN
+    cmd_pkt.byte[2] := BGAIN_RESET
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_bluegain_up(): s | cmd_pkt
+' Increase blue gain
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_BGAIN
+    cmd_pkt.byte[2] := BGAIN_UP
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
