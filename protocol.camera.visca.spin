@@ -78,6 +78,11 @@ con
             ZOOM_TELE_VAR   = $20
             ZOOM_WIDE_VAR   = $30
 
+        CAM_RGAIN           = $03
+            RGAIN_RESET     = $00
+            RGAIN_UP        = $02
+            RGAIN_DOWN      = $03
+
         CAM_FOCUS           = $08
             FOCUS_STOP      = $00
             FOCUS_FAR       = $02
@@ -277,6 +282,39 @@ pub cam_power(pwr): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PWR
     cmd_pkt.byte[2] := (pwr) ? $02 : $03        ' non-zero? Power on; else power off.
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_redgain_down(): s | cmd_pkt
+' Decrease red gain
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_RGAIN
+    cmd_pkt.byte[2] := RGAIN_DOWN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_redgain_reset(): s | cmd_pkt
+' Reset red gain to camera default
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_RGAIN
+    cmd_pkt.byte[2] := RGAIN_RESET
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_redgain_up(): s | cmd_pkt
+' Increase red gain
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_RGAIN
+    cmd_pkt.byte[2] := RGAIN_UP
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
