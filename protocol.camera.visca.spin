@@ -169,6 +169,10 @@ con
             WD_ON           = $02
             WD_OFF          = $03
 
+        CAM_HIGHRES         = $52
+            HIGHRES_ON      = $02
+            HIGHRES_OFF     = $03
+
         CAM_AF_MODE         = $57
             AF_MD_NORMAL    = $00
             AF_MD_INTERVAL  = $01
@@ -519,6 +523,28 @@ pub cam_gain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_GAIN
     cmd_pkt.byte[2] := GAIN_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_highres_off(): s | cmd_pkt
+' Disable exposure compensation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_HIGHRES
+    cmd_pkt.byte[2] := HIGHRES_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_highres_on(): s | cmd_pkt
+' Enable exposure compensation
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_HIGHRES
+    cmd_pkt.byte[2] := HIGHRES_ON
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
