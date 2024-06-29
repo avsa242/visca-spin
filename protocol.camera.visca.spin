@@ -118,6 +118,13 @@ con
             FOCUS_MANUAL    = $03
             FOCUS_AUTO_TOG  = $10
 
+        CAM_AE_MODE         = $39
+            AE_FULLAUTO     = $00
+            AE_MANUAL       = $03
+            AE_SHUTTER_PRI  = $0a
+            AE_IRIS_PRI     = $0b
+            AE_BRIGHT       = $0d
+
         CAM_AF_MODE         = $57
             AF_MD_NORMAL    = $00
             AF_MD_INTERVAL  = $01
@@ -142,6 +149,23 @@ pub attach_funcs(p_tx, p_rx)
 '   p_rx:   pointer to getchar() function
     putchar := p_tx
     getchar := p_rx
+
+
+pub cam_autoexposure_mode(md): s | cmd_pkt
+' Set camera auto-exposure mode
+'   md:
+'       AE_FULLAUTO ($00):      automatic exposure mode
+'       AE_MANUAL ($03):        manual control
+'       AE_SHUTTER_PRI ($0a):   shutter priority automatic exposure
+'       AE_IRIS_PRI ($0b):      iris priority automatic exposure
+'       AE_BRIGHT ($0d):        bright mode (manual control)
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_AE_MODE
+    cmd_pkt.byte[2] := AE_FULLAUTO #> md <# AE_BRIGHT
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
 pub cam_autofocus_mode(md): s | cmd_pkt
