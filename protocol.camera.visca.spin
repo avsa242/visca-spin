@@ -160,6 +160,10 @@ con
             AE_IRIS_PRI     = $0b
             AE_BRIGHT       = $0d
 
+        CAM_WD              = $3d
+            WD_ON           = $02
+            WD_OFF          = $03
+
         CAM_AF_MODE         = $57
             AF_MD_NORMAL    = $00
             AF_MD_INTERVAL  = $01
@@ -657,6 +661,28 @@ pub cam_whitebalance_mode(md): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_WHITEBAL
     cmd_pkt.byte[2] := WB_AUTO #> md <# WB_MANUAL
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_wide_dyn_range_off(): s | cmd_pkt
+' Disable wide dynamic range
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_WD
+    cmd_pkt.byte[2] := WD_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_wide_dyn_range_on(): s | cmd_pkt
+' Enable wide dynamic range
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_WD
+    cmd_pkt.byte[2] := WD_ON
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
