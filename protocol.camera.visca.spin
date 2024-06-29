@@ -110,6 +110,11 @@ con
             GAIN_UP         = $02
             GAIN_DN         = $03
 
+        CAM_BRIGHT          = $0d
+            BRIGHT_RESET    = $00
+            BRIGHT_UP       = $02
+            BRIGHT_DN       = $03
+
         CAM_IR_CORRECTION   = $11
             IR_CORR_STD     = $00
             IR_CORR_IR      = $01
@@ -248,6 +253,39 @@ pub cam_bluegain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BGAIN
     cmd_pkt.byte[2] := BGAIN_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_brightness_down(): s | cmd_pkt
+' Decrease brightness
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_BRIGHT
+    cmd_pkt.byte[2] := BRIGHT_DN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_brightness_reset(): s | cmd_pkt
+' Reset brightness to camera default
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_BRIGHT
+    cmd_pkt.byte[2] := BRIGHT_RESET
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_brightness_up(): s | cmd_pkt
+' Increase brightness
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_BRIGHT
+    cmd_pkt.byte[2] := BRIGHT_UP
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
