@@ -603,7 +603,7 @@ pub cam_high_sens_on(): s | cmd_pkt
 
 
 pub cam_highres_off(): s | cmd_pkt
-' Disable exposure compensation
+' Disable high-resolution mode
 '   Returns:
 '       data packet length sent to camera on success
 '       negative numbers on failure
@@ -614,7 +614,7 @@ pub cam_highres_off(): s | cmd_pkt
 
 
 pub cam_highres_on(): s | cmd_pkt
-' Enable exposure compensation
+' Enable high-resolution mode
 '   Returns:
 '       data packet length sent to camera on success
 '       negative numbers on failure
@@ -1187,8 +1187,8 @@ pri command(dest_id, cmd_t, p_data, len): s | idx
         _buff[s++] := byte[p_data++]
     _buff[s++] := TERMINATE
 
-    ser[_dbg].str(@"[VISCA] ")
-    ser[_dbg].hexdump_noascii(@_buff, 0, 1, s, s)
+    'ser[_dbg].str(@"[VISCA] ")
+    'ser[_dbg].hexdump_noascii(@_buff, 0, 1, s, s)
 
     { now actually send it }
     repeat idx from 0 to s-1
@@ -1207,8 +1207,8 @@ pri read_resp(): s | idx, b
     repeat
         _rxbuff[idx++] := b := getchar()
     until ( b == TERMINATE )
-    ser[_dbg].str(@"[VISCA] ")
-    ser[_dbg].hexdump(@_rxbuff, 0, 1, idx, idx)
+    'ser[_dbg].str(@"[VISCA] ")
+    'ser[_dbg].hexdump(@_rxbuff, 0, 1, idx, idx)
 
     case _rxbuff[1] & RESPTYPE_MASK
         $40, $50:
