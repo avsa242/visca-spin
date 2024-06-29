@@ -4,7 +4,7 @@
     Description:    Implementation of Sony's VISCA camera protocol (controller)
     Author:         Jesse Burt
     Started:        Jun 28, 2024
-    Updated:        Jun 28, 2024
+    Updated:        Jun 29, 2024
     Copyright (c) 2024 - See end of file for terms of use.
 ----------------------------------------------------------------------------------------------------
 }
@@ -88,6 +88,11 @@ con
             FOCUS_AUTO      = $02
             FOCUS_MANUAL    = $03
             FOCUS_AUTO_TOG  = $10
+        CAM_AF_MODE         = $57
+            AF_MD_NORMAL    = $00
+            AF_MD_INTERVAL  = $01
+            AF_MD_ZOOM_TRIG = $02
+            AF_MD_PRESET    = $03
         CAM_AF_SENS         = $58
             AF_SENS_HIGH    = $02
             AF_SENS_LOW     = $03
@@ -108,10 +113,30 @@ pub attach_funcs(p_tx, p_rx)
     getchar := p_rx
 
 
+pub cam_autofocus_mode(md): s | cmd_pkt
+' Set camera autofocus sensitivity
+'   md:
+'       AF_MD_NORMAL ($00)
+'       AF_MD_INTERVAL ($01)
+'       AF_MD_ZOOM_TRIG ($02)
+'       AF_MD_PRESET ($03)
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_AF_MODE
+    cmd_pkt.byte[2] := AF_MD_NORMAL #> md <# AF_MD_PRESET
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
 pub cam_autofocus_sensitivity(sens): s | cmd_pkt
 ' Set camera autofocus sensitivity
-'   AF_SENS_HIGH ($02): normal/high sensitivity
-'   AF_SENS_LOW ($03):  low sensitivity
+'   sens:
+'       AF_SENS_HIGH ($02): normal/high sensitivity
+'       AF_SENS_LOW ($03):  low sensitivity
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AF_SENS
     cmd_pkt.byte[2] := AF_SENS_HIGH #> sens <# AF_SENS_LOW
@@ -186,10 +211,12 @@ pub cam_focus_stop(): s | cmd_pkt
 
 pub cam_power(pwr): s | cmd_pkt
 ' Power on camera
-'   id: camera id (1..7)
 '   pwr:
 '       TRUE (non-zero values): power on
 '       FALSE (0): power off
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PWR
     cmd_pkt.byte[2] := (pwr) ? $02 : $03        ' non-zero? Power on; else power off.
@@ -198,7 +225,9 @@ pub cam_power(pwr): s | cmd_pkt
 
 pub cam_zoom_stop(): s | cmd_pkt
 ' Stop a zoom operation
-'   id: camera id (1..7)
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_STOP
@@ -208,7 +237,9 @@ pub cam_zoom_stop(): s | cmd_pkt
 pub cam_zoom_in = cam_zoom_tele
 pub cam_zoom_tele(): s | cmd_pkt
 ' Zoom in (telephoto)
-'   id: camera id (1..7)
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_TELE
@@ -218,7 +249,9 @@ pub cam_zoom_tele(): s | cmd_pkt
 pub cam_zoom_out = cam_zoom_wide
 pub cam_zoom_wide(): s | cmd_pkt
 ' Zoom out (wide)
-'   id: camera id (1..7)
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_WIDE
@@ -227,8 +260,10 @@ pub cam_zoom_wide(): s | cmd_pkt
 
 pub cam_zoom_tele_var(v): s | cmd_pkt
 ' Zoom in (telephoto)
-'   id: camera id (1..7)
-'   v:  zoom level xxx verify
+'   v:  zoom level (0..7) xxx verify
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_TELE_VAR | (0 #> v <# 7)
@@ -237,8 +272,10 @@ pub cam_zoom_tele_var(v): s | cmd_pkt
 
 pub cam_zoom_wide_var(v): s | cmd_pkt
 ' Zoom out (wide)
-'   id: camera id (1..7)
-'   v:  zoom level xxx verify
+'   v:  zoom level (0..7) xxx verify
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_WIDE_VAR | (0 #> v <# 7)
@@ -247,7 +284,9 @@ pub cam_zoom_wide_var(v): s | cmd_pkt
 
 pub model_id(): v | cmd_pkt
 ' Read the model ID from the camera
-'   Returns: 16-bit model ID
+'   Returns:
+'        16-bit model ID on success
+'       negative numbers on failure
     cmd_pkt.byte[0] := IF_INQ
     cmd_pkt.byte[1] := DEV_TYPE
     v := command(_cam_id, INQ_CMD, @cmd_pkt, 2)
