@@ -100,6 +100,11 @@ con
             SHUTTER_UP      = $02
             SHUTTER_DN      = $03
 
+        CAM_IRIS            = $0b
+            IRIS_RES        = $00
+            IRIS_UP         = $02
+            IRIS_DN         = $03
+
         CAM_IR_CORRECTION   = $11
             IR_CORR_STD     = $00
             IR_CORR_IR      = $01
@@ -340,6 +345,37 @@ pub cam_ir_correction_mode(md): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_IR_CORRECTION
     cmd_pkt.byte[2] := IR_CORR_STD #> md <# IR_CORR_IR
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_iris_down(): s | cmd_pkt
+' Iris down
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_IRIS
+    cmd_pkt.byte[2] := IRIS_DN
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+pub cam_iris_reset(): s | cmd_pkt
+' Iris reset
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_IRIS
+    cmd_pkt.byte[2] := IRIS_RES
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+pub cam_iris_up(): s | cmd_pkt
+' Iris up
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_IRIS
+    cmd_pkt.byte[2] := IRIS_UP
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
