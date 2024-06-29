@@ -189,6 +189,8 @@ con
             SLSHUT_AUTO     = $02
             SLSHUT_MAN      = $03
 
+        CAM_GAMMA           = $5b
+
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -661,6 +663,19 @@ pub cam_redgain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_RGAIN
     cmd_pkt.byte[2] := RGAIN_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_set_gamma(lev): s | cmd_pkt
+' Set gamma level
+'   lev:
+'       0 (standard), 1..6
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_GAMMA
+    cmd_pkt.byte[2] := 0 #> lev <# 6
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
