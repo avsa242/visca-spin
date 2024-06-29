@@ -208,6 +208,10 @@ con
             PICEFFECT_NEG   = $02
             PICEFFECT_BW    = $04
 
+        CAM_PICFLIP         = $66
+            PICFLIP_ON      = $02
+            PICFLIP_OFF     = $03
+
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -688,6 +692,28 @@ pub cam_mirror_h_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_LR_REVERSE
     cmd_pkt.byte[2] := LR_REVERSE_ON
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_mirror_v_off(): s | cmd_pkt
+' Do not mirror camera image vertically
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_PICFLIP
+    cmd_pkt.byte[2] := PICFLIP_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_mirror_v_on(): s | cmd_pkt
+' Mirror camera image vertically
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_PICFLIP
+    cmd_pkt.byte[2] := PICFLIP_ON
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
