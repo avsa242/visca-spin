@@ -195,6 +195,10 @@ con
             HIGHSENS_ON     = $02
             HIGHSENS_OFF    = $03
 
+        CAM_LR_REVERSE      = $61
+            LR_REVERSE_ON   = $02
+            LR_REVERSE_OFF  = $03
+
     IF_INQ                  = $00
         DEV_TYPE            = $02
 
@@ -642,6 +646,28 @@ pub cam_iris_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_IRIS
     cmd_pkt.byte[2] := IRIS_UP
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_mirror_h_off(): s | cmd_pkt
+' Do not mirror camera image horizontally
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_LR_REVERSE
+    cmd_pkt.byte[2] := LR_REVERSE_OFF
+    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+
+
+pub cam_mirror_h_on(): s | cmd_pkt
+' Mirror camera image horizontally
+'   Returns:
+'       data packet length sent to camera on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_LR_REVERSE
+    cmd_pkt.byte[2] := LR_REVERSE_ON
     s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
 
 
