@@ -31,7 +31,7 @@ P2/SPIN2:
 | Processor | Language | Compiler               | Backend      | Status                |
 |-----------|----------|------------------------|--------------|-----------------------|
 | P1        | SPIN1    | FlexSpin (6.9.4)       | Bytecode     | OK                    |
-| P1        | SPIN1    | FlexSpin (6.9.4)       | Native/PASM  | FTBFS                 |
+| P1        | SPIN1    | FlexSpin (6.9.4)       | Native/PASM  | OK                    |
 | P2        | SPIN2    | FlexSpin (6.9.4)       | NuCode       | Not yet implemented   |
 | P2        | SPIN2    | FlexSpin (6.9.4)       | Native/PASM2 | Not yet implemented   |
 

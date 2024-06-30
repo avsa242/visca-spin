@@ -5,7 +5,7 @@
         * Controller
     Author:         Jesse Burt
     Started:        Jun 28, 2024
-    Updated:        Jun 29, 2024
+    Updated:        Jun 30, 2024
     Copyright (c) 2024 - See end of file for terms of use.
 ----------------------------------------------------------------------------------------------------
 }
@@ -23,8 +23,8 @@ OBJ
     cfg:    "boardcfg.flip"
     time:   "time"
     ser:    "com.serial.terminal.ansi" | SER_BAUD=115_200
-    cam:    "com.serial.terminal.ansi" | RX_PIN=9, TX_PIN=8, SER_BAUD=9600, ...
-                                            SIG_MODE=%0011  ' flags: invert RX and TX
+    cam:    "com.serial" |  RX_PIN=9, TX_PIN=8, SER_BAUD=9600, ...
+                            SIG_MODE=%0011  ' flags: invert RX and TX
     visca:  "protocol.camera.visca.spin"
 
 

@@ -4,7 +4,7 @@
     Description:    Implementation of Sony's VISCA camera protocol (controller)
     Author:         Jesse Burt
     Started:        Jun 28, 2024
-    Updated:        Jun 29, 2024
+    Updated:        Jun 30, 2024
     Copyright (c) 2024 - See end of file for terms of use.
 ----------------------------------------------------------------------------------------------------
 }
@@ -255,7 +255,7 @@ pub cam_aperture_down(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_APERTURE
     cmd_pkt.byte[2] := APERTURE_DN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_aperture_reset(): s | cmd_pkt
@@ -266,7 +266,7 @@ pub cam_aperture_reset(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_APERTURE
     cmd_pkt.byte[2] := APERTURE_RES
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_aperture_up(): s | cmd_pkt
@@ -277,7 +277,7 @@ pub cam_aperture_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_APERTURE
     cmd_pkt.byte[2] := APERTURE_UP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_autoexposure_mode(md): s | cmd_pkt
@@ -294,7 +294,7 @@ pub cam_autoexposure_mode(md): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AE_MODE
     cmd_pkt.byte[2] := AE_FULLAUTO #> md <# AE_BRIGHT
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_autofocus_mode(md): s | cmd_pkt
@@ -310,7 +310,7 @@ pub cam_autofocus_mode(md): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AF_MODE
     cmd_pkt.byte[2] := AF_MD_NORMAL #> md <# AF_MD_PRESET
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_autofocus_sensitivity(sens): s | cmd_pkt
@@ -324,7 +324,7 @@ pub cam_autofocus_sensitivity(sens): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AF_SENS
     cmd_pkt.byte[2] := AF_SENS_HIGH #> sens <# AF_SENS_LOW
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_backlight_comp_off(): s | cmd_pkt
@@ -335,7 +335,7 @@ pub cam_backlight_comp_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BACKLIGHT
     cmd_pkt.byte[2] := BACKLIGHT_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_backlight_comp_on(): s | cmd_pkt
@@ -346,7 +346,7 @@ pub cam_backlight_comp_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BACKLIGHT
     cmd_pkt.byte[2] := BACKLIGHT_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_bluegain_down(): s | cmd_pkt
@@ -357,7 +357,7 @@ pub cam_bluegain_down(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BGAIN
     cmd_pkt.byte[2] := BGAIN_DOWN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_bluegain_reset(): s | cmd_pkt
@@ -368,7 +368,7 @@ pub cam_bluegain_reset(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BGAIN
     cmd_pkt.byte[2] := BGAIN_RESET
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_bluegain_up(): s | cmd_pkt
@@ -379,7 +379,7 @@ pub cam_bluegain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BGAIN
     cmd_pkt.byte[2] := BGAIN_UP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_brightness_down(): s | cmd_pkt
@@ -390,7 +390,7 @@ pub cam_brightness_down(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BRIGHT
     cmd_pkt.byte[2] := BRIGHT_DN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_brightness_reset(): s | cmd_pkt
@@ -401,7 +401,7 @@ pub cam_brightness_reset(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BRIGHT
     cmd_pkt.byte[2] := BRIGHT_RESET
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_brightness_up(): s | cmd_pkt
@@ -412,7 +412,7 @@ pub cam_brightness_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_BRIGHT
     cmd_pkt.byte[2] := BRIGHT_UP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_exp_compensation_down(): s | cmd_pkt
@@ -423,7 +423,7 @@ pub cam_exp_compensation_down(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_EXPCOMP
     cmd_pkt.byte[2] := EXPCOMP_DOWN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_exp_compensation_off(): s | cmd_pkt
@@ -434,7 +434,7 @@ pub cam_exp_compensation_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := (CAM_EXPCOMP | ONOFF)
     cmd_pkt.byte[2] := EXPCOMP_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_exp_compensation_on(): s | cmd_pkt
@@ -445,7 +445,7 @@ pub cam_exp_compensation_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := (CAM_EXPCOMP | ONOFF)
     cmd_pkt.byte[2] := EXPCOMP_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_exp_compensation_reset(): s | cmd_pkt
@@ -456,7 +456,7 @@ pub cam_exp_compensation_reset(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_EXPCOMP
     cmd_pkt.byte[2] := EXPCOMP_RESET
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_exp_compensation_up(): s | cmd_pkt
@@ -467,7 +467,7 @@ pub cam_exp_compensation_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_EXPCOMP
     cmd_pkt.byte[2] := EXPCOMP_UP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_focus_auto(): s | cmd_pkt
@@ -478,7 +478,7 @@ pub cam_focus_auto(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AUTOFOCUS
     cmd_pkt.byte[2] := FOCUS_AUTO
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_focus_auto_toggle(): s | cmd_pkt
@@ -489,7 +489,7 @@ pub cam_focus_auto_toggle(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AUTOFOCUS
     cmd_pkt.byte[2] := FOCUS_AUTO_TOG
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_focus_far(): s | cmd_pkt
@@ -500,7 +500,7 @@ pub cam_focus_far(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_FOCUS
     cmd_pkt.byte[2] := FOCUS_FAR
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_focus_manual(): s | cmd_pkt
@@ -511,7 +511,7 @@ pub cam_focus_manual(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AUTOFOCUS
     cmd_pkt.byte[2] := FOCUS_MANUAL
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_focus_near(): s | cmd_pkt
@@ -522,7 +522,7 @@ pub cam_focus_near(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_FOCUS
     cmd_pkt.byte[2] := FOCUS_NEAR
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_focus_stop(): s | cmd_pkt
@@ -533,7 +533,7 @@ pub cam_focus_stop(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_FOCUS
     cmd_pkt.byte[2] := FOCUS_STOP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_freeze_image(): s | cmd_pkt
@@ -544,7 +544,7 @@ pub cam_freeze_image(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_FREEZE
     cmd_pkt.byte[2] := FREEZE_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_gain_down(): s | cmd_pkt
@@ -555,7 +555,7 @@ pub cam_gain_down(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_GAIN
     cmd_pkt.byte[2] := GAIN_DN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_gain_reset(): s | cmd_pkt
@@ -566,7 +566,7 @@ pub cam_gain_reset(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_GAIN
     cmd_pkt.byte[2] := GAIN_RES
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_gain_up(): s | cmd_pkt
@@ -577,7 +577,7 @@ pub cam_gain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_GAIN
     cmd_pkt.byte[2] := GAIN_UP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_high_sens_off(): s | cmd_pkt
@@ -588,7 +588,7 @@ pub cam_high_sens_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_HIGHSENS
     cmd_pkt.byte[2] := HIGHSENS_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_high_sens_on(): s | cmd_pkt
@@ -599,7 +599,7 @@ pub cam_high_sens_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_HIGHSENS
     cmd_pkt.byte[2] := HIGHSENS_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_highres_off(): s | cmd_pkt
@@ -610,7 +610,7 @@ pub cam_highres_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_HIGHRES
     cmd_pkt.byte[2] := HIGHRES_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_highres_on(): s | cmd_pkt
@@ -621,7 +621,7 @@ pub cam_highres_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_HIGHRES
     cmd_pkt.byte[2] := HIGHRES_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_init_camera(): s | cmd_pkt
@@ -632,7 +632,7 @@ pub cam_init_camera(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_INITIALIZE
     cmd_pkt.byte[2] := INIT_CAMERA
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_init_lens(): s | cmd_pkt
@@ -643,7 +643,7 @@ pub cam_init_lens(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_INITIALIZE
     cmd_pkt.byte[2] := INIT_LENS
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_ir_correction_mode(md): s | cmd_pkt
@@ -657,7 +657,7 @@ pub cam_ir_correction_mode(md): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_IR_CORRECTION
     cmd_pkt.byte[2] := IR_CORR_STD #> md <# IR_CORR_IR
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_ir_cut_auto(ena): s | cmd_pkt
@@ -671,7 +671,7 @@ pub cam_ir_cut_auto(ena): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_AUTOICR
     cmd_pkt.byte[2] := (ena) ? AUTOICR_ON : AUTOICR_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_ir_cut_off(): s | cmd_pkt
@@ -682,7 +682,7 @@ pub cam_ir_cut_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ICR
     cmd_pkt.byte[2] := ICR_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_ir_cut_on(): s | cmd_pkt
@@ -693,7 +693,7 @@ pub cam_ir_cut_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ICR
     cmd_pkt.byte[2] := ICR_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_iris_down(): s | cmd_pkt
@@ -704,7 +704,7 @@ pub cam_iris_down(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_IRIS
     cmd_pkt.byte[2] := IRIS_DN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 pub cam_iris_reset(): s | cmd_pkt
 ' Iris reset
@@ -714,7 +714,7 @@ pub cam_iris_reset(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_IRIS
     cmd_pkt.byte[2] := IRIS_RES
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 pub cam_iris_up(): s | cmd_pkt
 ' Iris up
@@ -724,7 +724,7 @@ pub cam_iris_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_IRIS
     cmd_pkt.byte[2] := IRIS_UP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_mirror_h_off(): s | cmd_pkt
@@ -735,7 +735,7 @@ pub cam_mirror_h_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_LR_REVERSE
     cmd_pkt.byte[2] := LR_REVERSE_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_mirror_h_on(): s | cmd_pkt
@@ -746,7 +746,7 @@ pub cam_mirror_h_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_LR_REVERSE
     cmd_pkt.byte[2] := LR_REVERSE_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_mirror_v_off(): s | cmd_pkt
@@ -757,7 +757,7 @@ pub cam_mirror_v_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PICFLIP
     cmd_pkt.byte[2] := PICFLIP_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_mirror_v_on(): s | cmd_pkt
@@ -768,7 +768,7 @@ pub cam_mirror_v_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PICFLIP
     cmd_pkt.byte[2] := PICFLIP_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_mute_off(): s | cmd_pkt
@@ -779,7 +779,7 @@ pub cam_mute_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_MUTE
     cmd_pkt.byte[2] := MUTE_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_mute_on(): s | cmd_pkt
@@ -790,7 +790,7 @@ pub cam_mute_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_MUTE
     cmd_pkt.byte[2] := MUTE_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_mute_toggle(): s | cmd_pkt
@@ -801,7 +801,7 @@ pub cam_mute_toggle(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_MUTE
     cmd_pkt.byte[2] := MUTE_TOG
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_osd_enabled(ena): s | cmd_pkt
@@ -815,7 +815,7 @@ pub cam_osd_enabled(ena): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_DISPLAY
     cmd_pkt.byte[2] := (ena) ? DISPLAY_ON : DISPLAY_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_osd_toggle(): s | cmd_pkt
@@ -826,7 +826,7 @@ pub cam_osd_toggle(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_DISPLAY
     cmd_pkt.byte[2] := DISPLAY_TOG
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_picture_effect(eff): s | cmd_pkt
@@ -843,7 +843,7 @@ pub cam_picture_effect(eff): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PICEFFECT
     cmd_pkt.byte[2] := eff
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_power(pwr): s | cmd_pkt
@@ -857,7 +857,7 @@ pub cam_power(pwr): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_PWR
     cmd_pkt.byte[2] := (pwr) ? $02 : $03        ' non-zero? Power on; else power off.
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_redgain_down(): s | cmd_pkt
@@ -868,7 +868,7 @@ pub cam_redgain_down(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_RGAIN
     cmd_pkt.byte[2] := RGAIN_DOWN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_redgain_reset(): s | cmd_pkt
@@ -879,7 +879,7 @@ pub cam_redgain_reset(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_RGAIN
     cmd_pkt.byte[2] := RGAIN_RESET
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_redgain_up(): s | cmd_pkt
@@ -890,7 +890,7 @@ pub cam_redgain_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_RGAIN
     cmd_pkt.byte[2] := RGAIN_UP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_set_gamma(lev): s | cmd_pkt
@@ -903,7 +903,7 @@ pub cam_set_gamma(lev): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_GAMMA
     cmd_pkt.byte[2] := 0 #> lev <# 6
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_set_noise_reduction(lev): s | cmd_pkt
@@ -916,7 +916,7 @@ pub cam_set_noise_reduction(lev): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_NOISEREDUCT
     cmd_pkt.byte[2] := 0 #> lev <# 5
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_shutter_down(): s | cmd_pkt
@@ -927,7 +927,7 @@ pub cam_shutter_down(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_SHUTTER
     cmd_pkt.byte[2] := SHUTTER_DN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_shutter_reset(): s | cmd_pkt
@@ -938,7 +938,7 @@ pub cam_shutter_reset(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_SHUTTER
     cmd_pkt.byte[2] := SHUTTER_RES
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_shutter_up(): s | cmd_pkt
@@ -949,7 +949,7 @@ pub cam_shutter_up(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_SHUTTER
     cmd_pkt.byte[2] := SHUTTER_UP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_slowshutter_mode(md): s | cmd_pkt
@@ -963,7 +963,7 @@ pub cam_slowshutter_mode(md): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_SLSHUT
     cmd_pkt.byte[2] := SLSHUT_AUTO #> md <# SLSHUT_MAN
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_unfreeze_image(): s | cmd_pkt
@@ -974,7 +974,7 @@ pub cam_unfreeze_image(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_FREEZE
     cmd_pkt.byte[2] := FREEZE_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_whitebalance_mode(md): s | cmd_pkt
@@ -992,7 +992,7 @@ pub cam_whitebalance_mode(md): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_WHITEBAL
     cmd_pkt.byte[2] := WB_AUTO #> md <# WB_MANUAL
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_wide_dyn_range_off(): s | cmd_pkt
@@ -1003,7 +1003,7 @@ pub cam_wide_dyn_range_off(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_WD
     cmd_pkt.byte[2] := WD_OFF
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_wide_dyn_range_on(): s | cmd_pkt
@@ -1014,7 +1014,7 @@ pub cam_wide_dyn_range_on(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_WD
     cmd_pkt.byte[2] := WD_ON
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_zoom_stop(): s | cmd_pkt
@@ -1025,7 +1025,7 @@ pub cam_zoom_stop(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_STOP
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_zoom_in = cam_zoom_tele
@@ -1037,7 +1037,7 @@ pub cam_zoom_tele(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_TELE
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_zoom_out = cam_zoom_wide
@@ -1049,7 +1049,7 @@ pub cam_zoom_wide(): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_WIDE
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_zoom_tele_var(v): s | cmd_pkt
@@ -1061,7 +1061,7 @@ pub cam_zoom_tele_var(v): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_TELE_VAR | (0 #> v <# 7)
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub cam_zoom_wide_var(v): s | cmd_pkt
@@ -1073,7 +1073,7 @@ pub cam_zoom_wide_var(v): s | cmd_pkt
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := CAM_ZOOM
     cmd_pkt.byte[2] := ZOOM_WIDE_VAR | (0 #> v <# 7)
-    s := command( _cam_id, CTRL_CMD, @cmd_pkt, 3 )
+    s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
 pub model_id(): v | cmd_pkt
@@ -1083,7 +1083,7 @@ pub model_id(): v | cmd_pkt
 '       negative numbers on failure
     cmd_pkt.byte[0] := IF_INQ
     cmd_pkt.byte[1] := DEV_TYPE
-    v := command(_cam_id, INQ_CMD, @cmd_pkt, 2)
+    v := command(_cam_id, INQ_CMD, cmd_pkt, 2)
     if ( v < 0 )
         return
 
@@ -1115,7 +1115,7 @@ pub readreg(reg_nr): v | cmd_pkt, r, idx
     cmd_pkt.byte[0] := CAM_CMD
     cmd_pkt.byte[1] := REG_VAL
     cmd_pkt.byte[2] := reg_nr
-    v := command(_cam_id, INQ_CMD, @cmd_pkt, 3)
+    v := command(_cam_id, INQ_CMD, cmd_pkt, 3)
     if ( v < 0 )
         return v
 
@@ -1138,7 +1138,7 @@ PUB rom_version(): v | cmd_pkt
 '   Returns: ROM version
     cmd_pkt.byte[0] := IF_INQ
     cmd_pkt.byte[1] := DEV_TYPE
-    v := command(_cam_id, INQ_CMD, @cmd_pkt, 2)
+    v := command(_cam_id, INQ_CMD, cmd_pkt, 2)
     if ( v < 0 )
         return
 
@@ -1156,18 +1156,18 @@ pub vendor_id(): v | cmd_pkt
 '   Returns: 16-bit vendor ID
     cmd_pkt.byte[0] := $00
     cmd_pkt.byte[1] := $02
-    v := command(_cam_id, INQ_CMD, @cmd_pkt, 2)
+    v := command(_cam_id, INQ_CMD, cmd_pkt, 2)
     if ( v < 0 )
         return
 
     return (_rxbuff[2] << 8) | _rxbuff[3]
 
 
-pri command(dest_id, cmd_t, p_data, len): s | idx
+pri command(dest_id, cmd_t, data, len): s | idx
 ' Issue a command to the camera
 '   dest_id:    camera ID (1..7)
 '   cmd_t:      command type
-'   p_data:     pointer to parameters/data to write
+'   data:       pointer to parameters/data to write
 '   len:        length of parameters
 '   Returns:
 '       number of bytes sent on success
@@ -1183,8 +1183,9 @@ pri command(dest_id, cmd_t, p_data, len): s | idx
     s := 0
     _buff[s++] := START_BIT | (_src_addr << SRC) | dest_id
     _buff[s++] := cmd_t
+    idx := 0
     repeat len
-        _buff[s++] := byte[p_data++]
+        _buff[s++] := data.byte[idx++]
     _buff[s++] := TERMINATE
 
     'ser[_dbg].str(@"[VISCA] ")
