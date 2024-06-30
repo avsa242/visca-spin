@@ -178,6 +178,8 @@ con
             WD_ON           = $02
             WD_OFF          = $03
 
+        CAM_ZOOMPOS         = $47
+
         CAM_AUTOICR         = $51
             AUTOICR_ON      = $02
             AUTOICR_OFF     = $03
@@ -1028,6 +1030,23 @@ pub cam_zoom_stop(): s | cmd_pkt
     s := command( _cam_id, CTRL_CMD, cmd_pkt, 3 )
 
 
+pub cam_zoom_pos(): p | cmd_pkt
+' Get the camera's current zoom position
+'   Returns:
+'       zoom position word on success
+'       negative numbers on failure
+    cmd_pkt.byte[0] := CAM_CMD
+    cmd_pkt.byte[1] := CAM_ZOOMPOS
+    p := command( _cam_id, INQ_CMD, cmd_pkt, 2 )
+    if ( p < 0 )
+        return p
+    if ( p > 1 )
+        return  (_rxbuff[2] << 12) | ...
+                (_rxbuff[3] << 8) | ...
+                (_rxbuff[4] << 4) | ...
+                (_rxbuff[5])
+
+
 pub cam_zoom_in = cam_zoom_tele
 pub cam_zoom_tele(): s | cmd_pkt
 ' Zoom in (telephoto)
@@ -1163,7 +1182,7 @@ pub vendor_id(): v | cmd_pkt
     return (_rxbuff[2] << 8) | _rxbuff[3]
 
 
-pri command(dest_id, cmd_t, data, len): s | idx
+pri command(dest_id, cmd_t, data, len): s | idx, r
 ' Issue a command to the camera
 '   dest_id:    camera ID (1..7)
 '   cmd_t:      command type
@@ -1195,14 +1214,20 @@ pri command(dest_id, cmd_t, data, len): s | idx
     repeat idx from 0 to s-1
         putchar(_buff[idx])
 
-    if ( read_resp() < 0 )
+    r := read_resp()
+    if ( r < 0 )
+        'ser[_dbg].strln(@"[VISCA] error")
         return -1
-
+    if ( r > 1 )
+        return r
     return idx                              ' addr byte + cmd_t + len + terminator
 
 var byte _rxbuff[MSG_LEN_MAX]
 pri read_resp(): s | idx, b
-
+' Read response from the camera
+'   Returns:
+'       number of bytes read on success
+'       negative numbers on failure
     bytefill(@_rxbuff, 0, MSG_LEN_MAX)
     idx := 0
     repeat
@@ -1212,9 +1237,14 @@ pri read_resp(): s | idx, b
     'ser[_dbg].hexdump(@_rxbuff, 0, 1, idx, idx)
 
     case _rxbuff[1] & RESPTYPE_MASK
-        $40, $50:
-            'ser[_dbg].printf1(@"[VISCA] read_resp() ret %02.2x\n\r", _rxbuff[1])
-            return 1
+        ACK:
+            bytefill(@_rxbuff, 0, MSG_LEN_MAX)
+            idx := 0
+            repeat
+                _rxbuff[idx++] := b := getchar()
+            until ( b == TERMINATE )
+            if ( (_rxbuff[1] & RESPTYPE_MASK) == COMPLETION )
+                return idx
         $60:
             'ser[_dbg].printf1(@"[VISCA] read_resp() error; ret %02.2x\n\r", _rxbuff[1])
             return -1

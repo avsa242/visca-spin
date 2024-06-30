@@ -59,10 +59,12 @@ pub main() | fw_v
                 visca.cam_zoom_in()
                 time.msleep(CMD_DLY)
                 visca.cam_zoom_stop()
+                ser.printf1(@"Zoom pos: %04.4x\n\r", visca.cam_zoom_pos())
             "q":
                 visca.cam_zoom_out()
                 time.msleep(CMD_DLY)
                 visca.cam_zoom_stop()
+                ser.printf1(@"Zoom pos: %04.4x\n\r", visca.cam_zoom_pos())
             "W":
                 visca.cam_focus_far()
                 time.msleep(CMD_DLY)
@@ -95,7 +97,7 @@ PUB setup()
     time.msleep(30)
     ser.clear()
     ser.strln(@"Serial terminal started")
-
+    'visca.attach_dbg(@ser)
 
 DAT
 
